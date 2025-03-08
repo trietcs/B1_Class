@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sent B1 Class</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #ff99cc, #ff66b3);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        .start-screen {
+            text-align: center;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+        }
+
+        .start-button {
+            padding: 20px 40px;
+            font-size: 24px;
+            background-color: #ff3399;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .start-button:hover {
+            transform: scale(1.1);
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            display: none;
+            transform: scale(0);
+            transition: transform 0.5s ease-out;
+        }
+
+        .container.show {
+            display: block;
+            transform: scale(1);
+        }
+
+        h1 {
+            color: #ff3399;
+            font-size: 32px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        p {
+            color: #333;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            color: #ff3399;
+            font-size: 10px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff66b3;
+            transform: rotate(45deg);
+            animation: float 4s infinite;
+        }
+
+        .heart:before,
+        .heart:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff66b3;
+            border-radius: 50%;
+        }
+
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart:after {
+            left: -10px;
+            top: 0;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(45deg);
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.5;
+                transform: translateY(-20vh) rotate(45deg);
+            }
+        }
+
+        @keyframes shrink {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="start-screen" id="startScreen">
+        <button class="start-button" onclick="showGreetings()">Click to open secret</button>
+    </div>
+
+    <div class="container" id="greetings">
+        <h1>Happy Women’s Day</h1>
+        <h1>Các người đẹp class mình nha!</h1>
+        <p id="message1"></p>
+        <p id="message2"></p>
+    </div>
+    <div class="footer">
+        <p style="font-size: 12px;">Coded by trietcs</p>
+    </div>
+
+    <script>
+        // Danh sách các lời chúc ngẫu nhiên
+        const greetings = [
+            {
+                line1: "Happy 8/3! Chúc bạn luôn xinh đẹp, trẻ trung,",
+                line2: "và không bao giờ lo 'hết tiền' vào cuối tháng!"
+            },
+            {
+                line1: "Chúc bạn mỗi ngày đều xinh lung linh như filter Instagram,",
+                line2: "và tài khoản lúc nào cũng đầy số 0"
+            },
+            {
+                line1: "8/3 vui vẻ! Chúc bạn ăn hoài không mập,",
+                line2: "ngủ sấp mặt nhưng vẫn đẹp ngất ngây!"
+            },
+            {
+                line1: "Chúc bạn tỏa sáng như đèn pha ô tô,",
+                line2: "và lúc nào cũng tràn đầy năng lượng như pin 200%!"
+            }
+        ];
+
+        // Chọn ngẫu nhiên một lời chúc khi load trang
+        const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+
+        function showGreetings() {
+            const startScreen = document.getElementById('startScreen');
+            const greetingsDiv = document.getElementById('greetings');
+            const message1 = document.getElementById('message1');
+            const message2 = document.getElementById('message2');
+
+            // Thu nhỏ và làm mờ nút bấm
+            startScreen.style.animation = 'shrink 0.5s forwards';
+
+            // Gán lời chúc đã chọn ngẫu nhiên
+            message1.textContent = randomGreeting.line1;
+            message2.textContent = randomGreeting.line2;
+
+            // Hiển thị khung tin nhắn và bắt đầu hiệu ứng
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+                greetingsDiv.classList.add('show');
+                startHearts();
+                startColorChange();
+            }, 500); // Thời gian khớp với animation shrink
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 2 + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+
+        function startHearts() {
+            setInterval(createHeart, 100);
+        }
+
+        function startColorChange() {
+            const title = document.querySelector('h1');
+            setInterval(() => {
+                const colors = ['#ff3399', '#ff66b3', '#ff99cc', '#ff0066'];
+                title.style.color = colors[Math.floor(Math.random() * colors.length)];
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
